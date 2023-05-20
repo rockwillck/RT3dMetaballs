@@ -43,7 +43,6 @@ var camera = {
 var frame = 0
 function animate() {
     requestAnimationFrame(animate)
-    console.log(camera.yRotation*180/Math.PI, camera.z)
     // camera = {
     //     focalLength: 1,
     //     x:Math.cos(frame*Math.PI*0.005 + Math.PI)*40,
