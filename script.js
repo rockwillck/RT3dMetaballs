@@ -29,7 +29,7 @@ window.addEventListener(("keydown"), (e) => {
             camera.yRotation += 0.02
             break
         case "d":
-            camera.yRotation  = 0.02
+            camera.yRotation -= 0.02
             break
         case " ":
             angle += 0.1
@@ -40,6 +40,14 @@ window.addEventListener(("keydown"), (e) => {
         default:
             break
     }
+})
+
+var touchRotating = false
+window.addEventListener(("touchstart"), (e) => {
+    touchRotating = true
+})
+window.addEventListener(("touchend"), (e) => {
+    touchRotating = false
 })
 
 var fields = [{x:-20, y:-20, z:0, color:[255, 0, 0]}, {x:20, y:20, z:0, color:[0, 255, 0]}]
@@ -55,6 +63,12 @@ var frame = 0
 function animate() {
     requestAnimationFrame(animate)
     fields[1].z = Math.cos(frame*0.05)*3
+    if (touchRotating) {
+        angle += 0.1
+        camera.x = Math.cos(angle)*orbitRadius
+        camera.z = Math.sin(angle)*orbitRadius
+        camera.yRotation = angle + Math.PI
+    }
     sectors.forEach((sector, index) => {
         let y = Math.floor(index/sectorDivs.x)
         let x = index - y*sectorDivs.x
