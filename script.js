@@ -4,10 +4,14 @@ var dimensions = {x:128, y:128}
 canvas.width = dimensions.x
 canvas.height = dimensions.y
 
-var sectorDivs = {x:4, y:4}
+var sectorDivs = {x:2, y:5}
 var sectors = []
-for (i=0;i<sectorDivs.x*sectorDivs.y;i++) {
-    sectors.push(new Worker("pixelHandler.js"))
+function setup(x, y) {
+    sectorDivs = {x:x, y:y}
+    for (i=0;i<sectorDivs.x*sectorDivs.y;i++) {
+        sectors.push(new Worker("pixelHandler.js"))
+    }
+    animate()
 }
 
 const orbitRadius = 125
@@ -72,24 +76,36 @@ function animate() {
     sectors.forEach((sector, index) => {
         let y = Math.floor(index/sectorDivs.x)
         let x = index - y*sectorDivs.x
+
+        let startXPosition = Math.floor(x*dimensions.x/sectorDivs.x)
+        let startYPosition = Math.floor(y*dimensions.y/sectorDivs.y)
+
         sector.postMessage({
             position: {
-                x:x*dimensions.x/sectorDivs.x, 
-                y: y*dimensions.y/sectorDivs.y
+                x:startXPosition, 
+                y:startYPosition,
             }, 
+
             subDimensions: {
-                x:dimensions.x/sectorDivs.x, 
-                y:dimensions.y/sectorDivs.y
+                x: x == sectorDivs.x - 1 ? 
+                dimensions.x - startXPosition 
+                : 
+                Math.floor((x+1)*dimensions.x/sectorDivs.x) - startXPosition, 
+
+                y: y == sectorDivs.y - 1 ? 
+                dimensions.y - startYPosition 
+                :
+                Math.floor((y+1)*dimensions.y/sectorDivs.y) - startYPosition,
+
             }, dimensions: dimensions,
+
             fields: fields,
+
             camera: camera,
         })
         sector.onmessage = (e) => {
-            ctx.putImageData(e.data, x*dimensions.x/sectorDivs.x, y*dimensions.y/sectorDivs.y)
+            ctx.putImageData(e.data, startXPosition, startYPosition)
         }
     })
-    ctx.fillStyle = "white"
-    ctx.fillText(`${Math.round(camera.yRotation*180/Math.PI)}/${Math.round(camera.x)}/${Math.round(camera.z)}`, 10, 10)
     frame++
 }
-animate()

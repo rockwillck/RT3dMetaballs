@@ -1,4 +1,9 @@
 <style>
+    body {
+        background-color: black;
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        overflow-y: hidden;
+    }
     canvas {
         background-color: black;
         position:absolute;
@@ -8,8 +13,50 @@
         width:100vmin;
         height:100vmin;
     }
+    .modal {
+        position:absolute;
+        background-color: rgb(255, 255, 255);
+        width:50vmin;
+        height:50vmin;
+        border-radius:5vmin;
+        left:50%;
+        top:150%;
+        transform: translate(-50%, -50%);
+        transition:1s;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+    }
+    progress {
+        width: 30vmin;
+        height:5vmin;
+        border-radius: 5vmin;
+        position:absolute;
+        z-index:3;
+        opacity: 0.5;
+    }
+    progress::-webkit-progress-bar {
+        background-color: rgb(117, 117, 117);
+        border-radius: 5vmin;
+        overflow: auto;
+    }
+    progress::-webkit-progress-value {
+        background-color: #9abdff;
+    }
+    progress::-moz-progress-bar {
+        background-color: rgb(117, 117, 117);
+        border-radius: 5vmin;
+    }
+    p {
+        font-size: 3vmin;
+    }
 </style>
 <body>
     <canvas id="canvas"></canvas>
+    <div class="modal" id="modal">
+        <p>Optimizing...</p>
+        <progress value="0" id="progressBar"></progress>
+    </div>
 </body>
+<script src="tester.js"></script>
 <script src="script.js"></script>
