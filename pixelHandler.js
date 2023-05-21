@@ -1,28 +1,48 @@
-var pov = Math.PI*0.1
-function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, span) {
+var pov = Math.PI*0.3
+function parsePixel(sx, sy, sw, sh, dimensions, fields, camera) {
     let canvasData = new Uint8ClampedArray(sw*sh*4)
     for (let x=sx;x<sx+sw;x++) {
         for (let y=sy;y<sy+sh;y++) {
+            /* 
+            lens is curved, like a sphere
+            project sphere onto flat, 2d plane
+            */
+            // travelDistance = {
+            //     x:Math.cos(camera.yRotation - (x - dimensions.x/2)/(dimensions.x)*pov), 
+                
+            //     y:Math.sin((y - dimensions.y/2)/(dimensions.y)*pov), 
+                
+            //     z:Math.sin(camera.yRotation - (y - dimensions.y/2)/(dimensions.y)*pov),
+            // }
+
+            // currentPosition = {
+            //     x:camera.x + travelDistance.x*(camera.focalLength), 
+
+            //     y:camera.y + travelDistance.y*(camera.focalLength), 
+
+            //     z:camera.z + travelDistance.z*(camera.focalLength)
+            // }
+
+            /*
+            lens is flat
+            */
+            currentYRotation = Math.atan2((x-dimensions.x/2), camera.focalLength)
             travelDistance = {
-                x:Math.cos(camera.yRotation - (x - dimensions.x/2)/(dimensions.x/2)*pov), 
-                
-                y:Math.sin((y - dimensions.y/2)/(dimensions.y/2)*pov), 
-                
-                z:1,
+                x:Math.cos(camera.yRotation - currentYRotation),
+                y:(y-dimensions.y/2)/camera.focalLength,
+                z:Math.sin(camera.yRotation - currentYRotation)
             }
-
+            span = Math.sqrt((x-dimensions.x/2)**2 + (y-dimensions.y/2)**2 + camera.focalLength**2)
             currentPosition = {
-                x:camera.x + travelDistance.x*span, 
-
-                y:camera.y + travelDistance.y*span, 
-
-                z:camera.z + Math.sin(camera.yRotation)*(camera.focalLength)
+                x: camera.x + travelDistance.x*span,
+                y: camera.y + y - dimensions.y/2,
+                z: camera.z + travelDistance.z*span,
             }
 
             charge = 0
             for (i=0;i<50;i++) {
                 for (field of fields) {
-                    charge += 2/((
+                    charge += 12/((
                         (currentPosition.x - field.x)**2 + (currentPosition.y - field.y)**2 + (currentPosition.z - field.z)**2
                     ))
                     if (charge > 1) {
@@ -35,7 +55,7 @@ function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, span) {
                 currentPosition.y += travelDistance.y
                 currentPosition.z += travelDistance.z
                 if (charge > 0.95) {
-                    charge = ((50-i)/10)
+                    charge = ((50-i)/50)
                     // charge = 1
                     break
                 }
@@ -56,5 +76,5 @@ function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, span) {
 }
 
 onmessage = (e) => {
-    postMessage(parsePixel(e.data.position.x, e.data.position.y, e.data.subDimensions.x, e.data.subDimensions.y, e.data.dimensions, e.data.fields, e.data.camera, e.data.span))
+    postMessage(parsePixel(e.data.position.x, e.data.position.y, e.data.subDimensions.x, e.data.subDimensions.y, e.data.dimensions, e.data.fields, e.data.camera))
 }

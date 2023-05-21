@@ -1,7 +1,6 @@
 const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext("2d")
 var dimensions = {x:128, y:128}
-var span = Math.sqrt(dimensions.x**2 + dimensions.y**2)/2
 canvas.width = dimensions.x
 canvas.height = dimensions.y
 
@@ -11,45 +10,51 @@ for (i=0;i<sectorDivs.x*sectorDivs.y;i++) {
     sectors.push(new Worker("pixelHandler.js"))
 }
 
+const orbitRadius = 125
 window.addEventListener(("keydown"), (e) => {
-    if (e.key == "ArrowLeft") {
-        camera.x -= 1
-    }
-    if (e.key == "ArrowRight") {
-        camera.x += 1
-    }
-    if (e.key == "ArrowUp") {
-        camera.z += 1
-    }
-    if (e.key == "ArrowDown") {
-        camera.z -= 1
-    }
-    if (e.key == "a") {
-        camera.yRotation += 0.01
-    }
-    if (e.key == "d") {
-        camera.yRotation -= 0.01
+    switch (e.key) {
+        case "ArrowLeft":
+            camera.x -= 1
+            break
+        case "ArrowRight":
+            camera.x += 1
+            break
+        case "ArrowUp":
+            camera.z += 1
+            break
+        case "ArrowDown":
+            camera.z -= 1
+            break
+        case "a":
+            camera.yRotation += 0.02
+            break
+        case "d":
+            camera.yRotation  = 0.02
+            break
+        case " ":
+            angle += 0.1
+            camera.x = Math.cos(angle)*orbitRadius
+            camera.z = Math.sin(angle)*orbitRadius
+            camera.yRotation = angle + Math.PI
+            break
+        default:
+            break
     }
 })
 
-var fields = [{x:-6, y:-6, z:0, color:[255, 0, 0]}, {x:6, y:6, z:0, color:[0, 255, 0]}]
+var fields = [{x:-20, y:-20, z:0, color:[255, 0, 0]}, {x:20, y:20, z:0, color:[0, 255, 0]}]
+var angle = -Math.PI/2
 var camera = {
-    focalLength: 1,
+    focalLength:100,
     x:0,
     y:0,
-    z:-40,
-    yRotation:Math.PI/2,
+    z:-orbitRadius,
+    yRotation:angle + Math.PI,
 }
 var frame = 0
 function animate() {
     requestAnimationFrame(animate)
-    // camera = {
-    //     focalLength: 1,
-    //     x:Math.cos(frame*Math.PI*0.005 + Math.PI)*40,
-    //     y:0,
-    //     z:Math.sin(frame*Math.PI*0.005 + Math.PI)*40,
-    //     yRotation:frame*Math.PI*0.005,
-    // }
+    fields[1].z = Math.cos(frame*0.05)*3
     sectors.forEach((sector, index) => {
         let y = Math.floor(index/sectorDivs.x)
         let x = index - y*sectorDivs.x
@@ -64,12 +69,13 @@ function animate() {
             }, dimensions: dimensions,
             fields: fields,
             camera: camera,
-            span: span,
         })
         sector.onmessage = (e) => {
             ctx.putImageData(e.data, x*dimensions.x/sectorDivs.x, y*dimensions.y/sectorDivs.y)
         }
     })
+    ctx.fillStyle = "white"
+    ctx.fillText(`${Math.round(camera.yRotation*180/Math.PI)}/${Math.round(camera.x)}/${Math.round(camera.z)}`, 10, 10)
     frame++
 }
 animate()
