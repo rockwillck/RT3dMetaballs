@@ -14,6 +14,7 @@ function setup(x, y) {
     animate()
 }
 
+var rotating = false
 const orbitRadius = 125
 window.addEventListener(("keydown"), (e) => {
     switch (e.key) {
@@ -36,15 +37,24 @@ window.addEventListener(("keydown"), (e) => {
             camera.yRotation -= 0.02
             break
         case " ":
-            angle += 0.1
-            camera.x = Math.cos(angle)*orbitRadius
-            camera.z = Math.sin(angle)*orbitRadius
-            camera.yRotation = angle + Math.PI
+            rotating = true
             break
         default:
             break
     }
 })
+window.addEventListener(("keyup"), (e) => {
+    if (e.key == " ") {
+        rotating = false
+    }
+})
+window.addEventListener(("touchstart"), (e) => {
+    rotating = true
+})
+window.addEventListener(("touchend"), (e) => {
+    rotating = false
+})
+
 
 var touchRotating = false
 window.addEventListener(("touchstart"), (e) => {
@@ -66,6 +76,12 @@ var camera = {
 var frame = 0
 function animate() {
     requestAnimationFrame(animate)
+    if (rotating) {
+        angle += 0.02
+        camera.x = Math.cos(angle)*orbitRadius
+        camera.z = Math.sin(angle)*orbitRadius
+        camera.yRotation = angle + Math.PI
+    }
     fields[1].z = Math.cos(frame*0.05)*3
     if (touchRotating) {
         angle += 0.1
