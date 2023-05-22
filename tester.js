@@ -36,9 +36,10 @@ function test(x) {
                 setup(parseInt(localStorage.getItem("optimizedValue").split(",")[0]), parseInt(localStorage.getItem("optimizedValue").split(",")[1]))
             } catch (e) {
             } finally {
+                dismissModal(true)
                 clearInterval(id)
             }
-        }, 100)
+        }, 0)
     }
 }
 test(1)
