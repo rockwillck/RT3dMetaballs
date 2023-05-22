@@ -13,7 +13,7 @@ function setup(x, y) {
     }
     setTimeout(() => {
         toggleModalDismissible()
-        issueModal(`On computer: Press [SPACE] to orbit/Use arrow keys to move camear/Use [a] and [d] to rotate camera.
+        issueModal(`On computer: Press [SPACE] to orbit/Use arrow keys to move camera/Use [a] and [d] to rotate camera.
 
         On mobile/tablet: Press and hold to orbit.
         
