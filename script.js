@@ -11,6 +11,15 @@ function setup(x, y) {
     for (i=0;i<sectorDivs.x*sectorDivs.y;i++) {
         sectors.push(new Worker("pixelHandler.js"))
     }
+    setTimeout(() => {
+        toggleModalDismissible()
+        issueModal(`On computer: Press [SPACE] to orbit/Use arrow keys to move camear/Use [a] and [d] to rotate camera.
+
+        On mobile/tablet: Press and hold to orbit.
+        
+        Press [SPACE], [LMB], or press to continue.`)
+    }, 1000)
+
     animate()
 }
 
@@ -38,6 +47,7 @@ window.addEventListener(("keydown"), (e) => {
             break
         case " ":
             rotating = true
+            dismissModal()
             break
         default:
             break
@@ -48,7 +58,11 @@ window.addEventListener(("keyup"), (e) => {
         rotating = false
     }
 })
+window.addEventListener(("click"), (e) => {
+    dismissModal()
+})
 window.addEventListener(("touchstart"), (e) => {
+    dismissModal()
     rotating = true
 })
 window.addEventListener(("touchend"), (e) => {

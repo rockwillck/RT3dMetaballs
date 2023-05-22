@@ -3,29 +3,7 @@ function parsePixel(sx, sy, sw, sh, dimensions, fields, camera) {
     let canvasData = new Uint8ClampedArray(sw*sh*4)
     for (let x=sx;x<sx+sw;x++) {
         for (let y=sy;y<sy+sh;y++) {
-            /* 
-            lens is curved, like a sphere
-            project sphere onto flat, 2d plane
-            */
-            // travelDistance = {
-            //     x:Math.cos(camera.yRotation - (x - dimensions.x/2)/(dimensions.x)*pov), 
-                
-            //     y:Math.sin((y - dimensions.y/2)/(dimensions.y)*pov), 
-                
-            //     z:Math.sin(camera.yRotation - (y - dimensions.y/2)/(dimensions.y)*pov),
-            // }
-
-            // currentPosition = {
-            //     x:camera.x + travelDistance.x*(camera.focalLength), 
-
-            //     y:camera.y + travelDistance.y*(camera.focalLength), 
-
-            //     z:camera.z + travelDistance.z*(camera.focalLength)
-            // }
-
-            /*
-            lens is flat
-            */
+            // lens is flat
             currentYRotation = Math.atan2((x-dimensions.x/2), camera.focalLength)
             travelDistance = {
                 x:Math.cos(camera.yRotation - currentYRotation),

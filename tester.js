@@ -1,6 +1,6 @@
 var best = [0, Number.MAX_SAFE_INTEGER]
 function test(x) {
-    document.getElementById("modal").style.top = "50%"
+    issueModal("Optimizing...", true)
     start = Date.now()
     complete = 0
     let sectors = []
@@ -20,10 +20,10 @@ function test(x) {
                 if (x < 16) {
                     test(x+1)
                 } else {
+                    dismissModal(true)
                     setup(findClosestIntegerDivisors(best[0]), best[0]/findClosestIntegerDivisors(best[0]))
-                    document.getElementById("modal").style.top = "150%"
                 }
-                document.getElementById("progressBar").value = x/16
+                updateProgressBar(x/16)
             }
         }
     })

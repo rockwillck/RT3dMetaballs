@@ -1,7 +1,10 @@
 <style>
+    @font-face {
+        font-family: Josefin-Sans;
+        src: url(fonts/JosefinSans-VariableFont_wght.ttf);
+  }
     body {
         background-color: black;
-        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         overflow-y: hidden;
     }
     canvas {
@@ -26,14 +29,15 @@
         display:flex;
         justify-content: center;
         align-items: center;
+        text-align: center;
+        padding:5vmin;
     }
     progress {
         width: 30vmin;
         height:5vmin;
         border-radius: 5vmin;
         position:absolute;
-        z-index:3;
-        opacity: 0.5;
+        z-index:0;
     }
     progress::-webkit-progress-bar {
         background-color: rgb(117, 117, 117);
@@ -41,22 +45,26 @@
         overflow: auto;
     }
     progress::-webkit-progress-value {
-        background-color: #9abdff;
+        background-color: #c443b9;
     }
     progress::-moz-progress-bar {
         background-color: rgb(117, 117, 117);
         border-radius: 5vmin;
     }
-    p {
+    #modalText {
         font-size: 3vmin;
+        z-index:2;
+        color:white;
+        font-family: Josefin-Sans;
     }
 </style>
 <body>
     <canvas id="canvas"></canvas>
     <div class="modal" id="modal">
-        <p>Optimizing...</p>
+        <p id="modalText">Optimizing...</p>
         <progress value="0" id="progressBar"></progress>
     </div>
 </body>
+<script src="ui.js"></script>
 <script src="tester.js"></script>
 <script src="script.js"></script>
