@@ -1,10 +1,10 @@
 var pov = Math.PI*0.3
-function parsePixel(sx, sy, sw, sh, dimensions, fields, camera) {
+function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, precalcAngles) {
     let canvasData = new Uint8ClampedArray(sw*sh*4)
     for (let x=sx;x<sx+sw;x++) {
         for (let y=sy;y<sy+sh;y++) {
             // lens is flat
-            currentYRotation = Math.atan2((x-dimensions.x/2), camera.focalLength)
+            currentYRotation = precalcAngles[`${x}/${y}`]
             travelDistance = {
                 x:Math.cos(camera.yRotation - currentYRotation),
                 y:(y-dimensions.y/2)/camera.focalLength,
@@ -54,5 +54,5 @@ function parsePixel(sx, sy, sw, sh, dimensions, fields, camera) {
 }
 
 onmessage = (e) => {
-    postMessage(parsePixel(e.data.position.x, e.data.position.y, e.data.subDimensions.x, e.data.subDimensions.y, e.data.dimensions, e.data.fields, e.data.camera))
+    postMessage(parsePixel(e.data.position.x, e.data.position.y, e.data.subDimensions.x, e.data.subDimensions.y, e.data.dimensions, e.data.fields, e.data.camera, e.data.precalc))
 }

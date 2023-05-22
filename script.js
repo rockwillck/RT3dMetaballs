@@ -6,6 +6,7 @@ canvas.height = dimensions.y
 
 var sectorDivs = {x:2, y:5}
 var sectors = []
+var precalcAngles = {}
 function setup(x, y) {
     sectorDivs = {x:x, y:y}
     for (i=0;i<sectorDivs.x*sectorDivs.y;i++) {
@@ -19,6 +20,11 @@ function setup(x, y) {
         
         Press [SPACE], [LMB], or press to continue.`)
     }, 1000)
+    for (x=0;x<dimensions.x;x++) {
+        for (y=0;y<dimensions.y;y++) {
+            precalcAngles[`${x}/${y}`] = Math.atan2((x-dimensions.x/2), camera.focalLength)
+        }
+    }
 
     animate()
 }
@@ -133,6 +139,8 @@ function animate() {
             fields: fields,
 
             camera: camera,
+
+            precalc: precalcAngles,
         })
         sector.onmessage = (e) => {
             ctx.putImageData(e.data, startXPosition, startYPosition)
