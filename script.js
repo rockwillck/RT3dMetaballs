@@ -94,8 +94,8 @@ var camera = {
     yRotation:angle + Math.PI,
 }
 var frame = 0
+var complete = 0
 function animate() {
-    requestAnimationFrame(animate)
     if (rotating) {
         angle += 0.02
         camera.x = Math.cos(angle)*orbitRadius
@@ -144,6 +144,11 @@ function animate() {
         })
         sector.onmessage = (e) => {
             ctx.putImageData(e.data, startXPosition, startYPosition)
+            complete++
+            if (complete == sectorDivs.x*sectorDivs.y) {
+                complete = 0
+                animate()
+            }
         }
     })
     frame++
