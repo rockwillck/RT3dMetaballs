@@ -30,7 +30,7 @@ function setup(x, y) {
 }
 
 var rotating = false
-const orbitRadius = 125
+const orbitRadius = 150
 window.addEventListener(("keydown"), (e) => {
     switch (e.key) {
         case "ArrowLeft":
@@ -84,7 +84,7 @@ window.addEventListener(("touchend"), (e) => {
     touchRotating = false
 })
 
-var fields = [{x:-20, y:-20, z:0, type:"sphere"}, {x:20, y:20, z:0, type:"rect"}]
+var fields = [{x:-30, y:-30, z:0, type:"sphere"}, {x:30, y:30, z:0, type:"rect"}]
 var angle = -Math.PI/2
 var camera = {
     focalLength:100,
