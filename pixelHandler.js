@@ -20,8 +20,20 @@ function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, precalcAngles) {
             charge = 0
             for (i=0;i<50;i++) {
                 for (field of fields) {
-                    charge += 12/((
-                        (currentPosition.x - field.x)**2 + (currentPosition.y - field.y)**2 + (currentPosition.z - field.z)**2
+                    let power = 2
+                    let multiplier = 12
+                    switch(field.type) {
+                        case "sphere":
+                            power = 2
+                            multiplier = 12
+                            break;
+                        case "rect":
+                            power = 8
+                            multiplier = 1200000000
+                            break
+                    }
+                    charge += multiplier/((
+                        (currentPosition.x - field.x)**power + (currentPosition.y - field.y)**power + (currentPosition.z - field.z)**power
                     ))
                     if (charge > 1) {
                         charge = 1
@@ -32,7 +44,7 @@ function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, precalcAngles) {
                 currentPosition.x += travelDistance.x
                 currentPosition.y += travelDistance.y
                 currentPosition.z += travelDistance.z
-                if (charge > 0.95) {
+                if (charge > 0.99) {
                     charge = ((50-i)/50)
                     // charge = 1
                     break

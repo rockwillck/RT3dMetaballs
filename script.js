@@ -84,7 +84,7 @@ window.addEventListener(("touchend"), (e) => {
     touchRotating = false
 })
 
-var fields = [{x:-20, y:-20, z:0}, {x:20, y:20, z:0}]
+var fields = [{x:-20, y:-20, z:0, type:"sphere"}, {x:20, y:20, z:0, type:"rect"}]
 var angle = -Math.PI/2
 var camera = {
     focalLength:100,

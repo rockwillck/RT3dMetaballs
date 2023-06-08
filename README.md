@@ -19,6 +19,6 @@ There's currently a live demo right now, which can be accessed [here](https://ww
 ### Roadmap
 - [x] Multithreading using Web Workers
 - [x] Spheres
-- [ ] Cubes
+- [x] Cubes
 - [ ] Cylinders
 - [ ] Better camera controls
