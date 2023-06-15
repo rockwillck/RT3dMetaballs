@@ -84,7 +84,7 @@ window.addEventListener(("touchend"), (e) => {
     touchRotating = false
 })
 
-var fields = [{x:-30, y:-30, z:0, type:"sphere"}, {x:30, y:30, z:0, type:"rect"}]
+var fields = [{x:30, y:-30, z:0, type:"sphere", neg:false}, {x:0, y:0, z:0, type:"rect", neg:false}, {x:-20, y:0, z:0, type:"sphere", neg:true}]
 var angle = -Math.PI/2
 var camera = {
     focalLength:100,
@@ -102,8 +102,8 @@ function animate() {
         camera.z = Math.sin(angle)*orbitRadius
         camera.yRotation = angle + Math.PI
     }
-    fields[1].z = Math.cos(frame*0.05)*6
-    fields[1].y = Math.sin(frame*0.05)*6
+    // fields[1].z = Math.cos(frame*0.05)*6
+    // fields[1].y = Math.sin(frame*0.05)*6
     if (touchRotating) {
         angle += 0.1
         camera.x = Math.cos(angle)*orbitRadius

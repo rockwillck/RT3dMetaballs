@@ -1,5 +1,5 @@
 var pov = Math.PI*0.3
-var marches = 60
+var marches = 70
 function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, precalcAngles) {
     let canvasData = new Uint8ClampedArray(sw*sh*4)
     for (let x=sx;x<sx+sw;x++) {
@@ -30,7 +30,7 @@ function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, precalcAngles) {
                             power = 8
                             break
                     }
-                    charge += (36)**(power-1)/((
+                    charge += (field.neg?-1:1)*(36)**(power-1)/((
                         (currentPosition.x - field.x)**power + (currentPosition.y - field.y)**power + (currentPosition.z - field.z)**power
                     ))
                     if (charge > 1) {
@@ -42,7 +42,7 @@ function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, precalcAngles) {
                 currentPosition.x += travelDistance.x
                 currentPosition.y += travelDistance.y
                 currentPosition.z += travelDistance.z
-                if (charge == 1) {
+                if (charge > 0.99) {
                     charge = ((marches-i)/marches)
                     break
                 }

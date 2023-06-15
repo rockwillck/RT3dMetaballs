@@ -21,4 +21,6 @@ There's currently a live demo right now, which can be accessed [here](https://ww
 - [x] Spheres
 - [x] Cubes
 - [ ] Cylinders
+- [x] Negatives
+- [ ] Color
 - [ ] Better camera controls
