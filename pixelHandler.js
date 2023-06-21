@@ -1,5 +1,5 @@
 var pov = Math.PI*0.3
-var marches = 70
+var marches = 100
 function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, precalcAngles) {
     let canvasData = new Uint8ClampedArray(sw*sh*4)
     for (let x=sx;x<sx+sw;x++) {
@@ -22,7 +22,6 @@ function parsePixel(sx, sy, sw, sh, dimensions, fields, camera, precalcAngles) {
             for (i=0;i<marches;i++) {
                 for (field of fields) {
                     let power = 2
-                    // let multiplier = 1
                     switch(field.type) {
                         case "sphere":
                             break;

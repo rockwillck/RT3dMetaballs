@@ -1,8 +1,9 @@
 const canvas = document.getElementById("canvas")
-const ctx = canvas.getContext("2d")
+const ctx = canvas.getContext("2d", { alpha: false })
 var dimensions = {x:128, y:128}
 canvas.width = dimensions.x
 canvas.height = dimensions.y
+ctx.translate(0.5, 0.5);
 
 var sectorDivs = {x:2, y:5}
 var sectors = []
@@ -75,16 +76,7 @@ window.addEventListener(("touchend"), (e) => {
     rotating = false
 })
 
-
-var touchRotating = false
-window.addEventListener(("touchstart"), (e) => {
-    touchRotating = true
-})
-window.addEventListener(("touchend"), (e) => {
-    touchRotating = false
-})
-
-var fields = [{x:30, y:-30, z:0, type:"sphere", neg:false}, {x:0, y:0, z:0, type:"rect", neg:false}, {x:-20, y:0, z:0, type:"sphere", neg:true}]
+var fields = [{x:15, y:-15, z:0, type:"sphere", neg:false}, {x:-15, y:15, z:0, type:"rect", neg:false}, {x:-50, y:15, z:0, type:"sphere", neg:true}]
 var angle = -Math.PI/2
 var camera = {
     focalLength:100,
@@ -97,15 +89,7 @@ var frame = 0
 var complete = 0
 function animate() {
     if (rotating) {
-        angle += 0.02
-        camera.x = Math.cos(angle)*orbitRadius
-        camera.z = Math.sin(angle)*orbitRadius
-        camera.yRotation = angle + Math.PI
-    }
-    // fields[1].z = Math.cos(frame*0.05)*6
-    // fields[1].y = Math.sin(frame*0.05)*6
-    if (touchRotating) {
-        angle += 0.1
+        angle -= 0.02
         camera.x = Math.cos(angle)*orbitRadius
         camera.z = Math.sin(angle)*orbitRadius
         camera.yRotation = angle + Math.PI
